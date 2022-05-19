@@ -1,7 +1,6 @@
 import java.util.Map;
 import static java.util.Map.entry;
 
-import org.jetbrains.annotations.Nullable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,10 +16,11 @@ public class DemoGoogleTest {
             entry("chrome", "chromedriver.exe"),
             entry("edge", "msedgedriver.exe"));
 
-    public static @Nullable WebDriver getBrowserInstance(String browser) {
+    public static WebDriver getBrowserInstance(String browser) {
         System.out.println("Inicializando Driver.");
 
-        // Tal vez se podría hacer esto con un HashMap.
+        // Si no existe el driver en el Map, se lanza una excepción. Esto
+        // permite que no tengamos que hacer esta verificación más adelante.
         if (!driversMap.containsKey(browser)) {
             throw new IllegalArgumentException("Invalid browser: " + browser);
         }
@@ -30,18 +30,17 @@ public class DemoGoogleTest {
         // Referenciar el driver que estaremos utilizando.
         System.setProperty(driver, executable);
 
-        if (browser == "chrome") {
-            // El WebDriver deberá apuntar a Chrome, ya que desde aquí, las
-            // instrucciones se ejecutarán sobre el chrome que esté abierto.
-            return new ChromeDriver();
-        }
         if (browser == "edge") {
             return new EdgeDriver();
         }
+        // Al menos por el momento, si el navegador no es Edge, es Chrome. Me
+        // gustaría instanciar a partir del Map para no tener que poner
+        // condicionales, pero no sé si sea posible hacerlo.
+        //
+        // El WebDriver deberá apuntar a Chrome, ya que desde aquí, las
+        // instrucciones se ejecutarán sobre el chrome que esté abierto.
+        return new ChromeDriver();
 
-        // Si no está el browser, regresa null, aunque eso ya se hace en la
-        // excepción.
-        return null;
     }
 
     public static void login(String username, String password, WebDriver driver) {
@@ -82,20 +81,18 @@ public class DemoGoogleTest {
         System.out.println("Validando mensaje de error");
 
         /*
-         * // Encontrar elemento por selector CSS.
-         * WebElement warningInvalidMessage =
+         * // Encontrar elemento por selector CSS. WebElement
+         * warningInvalidMessage =
          * driver.findElement(By.cssSelector("p[id='name']"));
          */
         // Encontrar elemento con Xpath.
         WebElement warningInvalidCredentials = driver.findElement(
                 By.xpath("//p[contains(text(),'Invalid username or password!') and @id='name']"));
 
-        // Vamos a hacer uso de Assert para validar ciertas cosas.
-        // En este caso, vamos a validar que el valor del warning sea true, que esté
-        // desplegado.
-        // assertTrue solo acepta valores booleanos.
+        // Vamos a hacer uso de Assert para validar ciertas cosas. En este caso,
+        // vamos a validar que el valor del warning sea true, que esté
+        // desplegado. assertTrue solo acepta valores booleanos.
         Assert.assertTrue(warningInvalidCredentials.isDisplayed());
-
     }
 
     @Test
@@ -129,8 +126,8 @@ public class DemoGoogleTest {
         // Buscar que se encuentre el username en el label.
         System.out.println("Buscando el username en el label");
 
-        // WebElement userLabel = driver.findElement(By.xpath("//label[contains(text(),
-        // user)]"));
+        // WebElement userLabel =
+        // driver.findElement(By.xpath("//label[contains(text(), user)]"));
         WebElement userLabel = driver.findElement(
                 By.xpath("//label[@id='userName-value' and contains(text(), user)]"));
 
@@ -138,9 +135,9 @@ public class DemoGoogleTest {
 
         // Cerramos la ventana actual, también terminando el driver si es la
         // última instancia del driver.
-        // driver.close();
+        /* driver.close(); */
 
         // Cerramos todas las instancias del driver.
-        // driver.quit();
+        /* driver.quit(); */
     }
 }
