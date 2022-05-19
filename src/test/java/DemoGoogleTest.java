@@ -102,7 +102,7 @@ public class DemoGoogleTest {
 
         // Abrir página.
         System.out.println("Navegando a la página DemoQA.");
-        driver.navigate().to("https://www.demoqa.com/login");
+        driver.navigate().to("https://demoqa.com/login");
 
         System.out.println("Creando nuevo usuario.");
         WebElement inputUser = driver.findElement(By.xpath("//button[@id='newUser']"));
