@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DemoGoogleTest {
+public class DemoQaTest {
     public static void login(String username, String password, WebDriver driver) {
         // Navegamos con el driver hacia google.
         driver.navigate().to("https://demoqa.com/login");
