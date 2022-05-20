@@ -1,48 +1,10 @@
-import java.util.Map;
-import static java.util.Map.entry;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class DemoGoogleTest {
-    public static String driversFolder = "drivers/";
-    // Mapa inmutable.
-    public static Map<String, String> driversMap = Map.ofEntries(
-            entry("chrome", "chromedriver.exe"),
-            entry("edge", "msedgedriver.exe"));
-
-    public static WebDriver getBrowserInstance(String browser) {
-        System.out.println("Inicializando Driver.");
-
-        // Si no existe el driver en el Map, se lanza una excepción. Esto
-        // permite que no tengamos que hacer esta verificación más adelante.
-        if (!driversMap.containsKey(browser)) {
-            throw new IllegalArgumentException("Invalid browser: " + browser);
-        }
-
-        String driver = "webdriver." + browser + ".driver";
-        String executable = driversFolder + driversMap.get(browser);
-        // Referenciar el driver que estaremos utilizando.
-        System.setProperty(driver, executable);
-
-        if (browser == "edge") {
-            return new EdgeDriver();
-        }
-        // Al menos por el momento, si el navegador no es Edge, es Chrome. Me
-        // gustaría instanciar a partir del Map para no tener que poner
-        // condicionales, pero no sé si sea posible hacerlo.
-        //
-        // El WebDriver deberá apuntar a Chrome, ya que desde aquí, las
-        // instrucciones se ejecutarán sobre el chrome que esté abierto.
-        return new ChromeDriver();
-
-    }
-
     public static void login(String username, String password, WebDriver driver) {
         // Navegamos con el driver hacia google.
         driver.navigate().to("https://demoqa.com/login");
@@ -66,7 +28,7 @@ public class DemoGoogleTest {
 
     @Test
     public void loginInvalidCredentials() {
-        WebDriver driver = getBrowserInstance("chrome");
+        WebDriver driver = Browser.getBrowserInstance("chrome");
         login("invalid", "invalid", driver);
 
         // Temporalmente, haremos uso de Thread.sleep para esperar a que el
@@ -98,7 +60,7 @@ public class DemoGoogleTest {
     @Test
     // Este Test no lo haremos, ya que tiene un Captcha.
     public void createNewUser() {
-        WebDriver driver = getBrowserInstance("chrome");
+        WebDriver driver = Browser.getBrowserInstance("chrome");
 
         // Abrir página.
         System.out.println("Navegando a la página DemoQA.");
@@ -113,7 +75,7 @@ public class DemoGoogleTest {
         // public void loginValidCredentials(String browser) {
         String user = "vectortesting";
         String password = "Vector1234!";
-        WebDriver driver = getBrowserInstance("chrome");
+        WebDriver driver = Browser.getBrowserInstance("chrome");
 
         login(user, password, driver);
 
