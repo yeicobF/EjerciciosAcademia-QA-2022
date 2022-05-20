@@ -1,4 +1,5 @@
 import java.time.Duration;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
@@ -14,12 +15,6 @@ import org.testng.annotations.Test;
 public class AutomationPracticeTest {
     public static String BASE_URL = "http://automationpractice.com/index.php";
 
-    public static Boolean isPageContactUs(WebDriver driver) {
-        WebElement title = driver.findElement(By.xpath("//h1[contains(text(), 'Customer service - Contact us')]"));
-
-        return title.isDisplayed();
-    }
-
     @Test
     public void sendContactMessage() {
         WebDriver driver = Browser.getBrowserInstance("chrome");
@@ -27,10 +22,6 @@ public class AutomationPracticeTest {
 
         WebElement contactUsButton = driver.findElement(By.xpath("//a[@title='Contact Us']"));
         contactUsButton.click();
-
-        if (!isPageContactUs(driver)) {
-            throw new RuntimeException("No se encontró el elemento de contacto");
-        }
 
         /*
          * Esperar a que un elemento esté disponible en la página para proceder.
@@ -57,7 +48,18 @@ public class AutomationPracticeTest {
          */
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h1[contains(text(), 'Contact us')]")));
+        System.out.println("Nos encontramos en Contact Us.");
 
-        
+        WebElement subjectButton = driver.findElement(By.xpath("//select[@id='id_contact']"));
+        subjectButton.click();
+
+        // Obtenemos todas las opciones.
+        List<WebElement> subjectOptions = driver
+                .findElements(By.cssSelector(
+                        "select[id='id_contact'] > option"));
+        System.out.println("Hay " + subjectOptions.size() + " opciones.");
+        subjectOptions.forEach(option -> System.out.println(option.getText()));
+
+        subjectOptions.get(1).click();
     }
 }
