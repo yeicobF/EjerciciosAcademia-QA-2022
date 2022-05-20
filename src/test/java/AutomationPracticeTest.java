@@ -15,11 +15,18 @@ import org.testng.annotations.Test;
 public class AutomationPracticeTest {
     public static String BASE_URL = "http://automationpractice.com/index.php";
 
-    @Test
-    public void sendContactMessage() {
-        WebDriver driver = Browser.getBrowserInstance("chrome");
-        driver.navigate().to(BASE_URL);
-
+    /**
+     * Vamos a la sección de Contact Us, utilizando un Fluent Wait para esperar
+     * a que el elemento esté disponible en cierto tiempo, revisando cada
+     * ciertos milisegundos si es que no lo ha encontrado. hasta llegar a un
+     * límite.
+     * 
+     * Esto nos evita problemas de no encontrar algún elemento porque no ha
+     * cargado la página.
+     * 
+     * @param driver
+     */
+    public static void navigateToContactUs(WebDriver driver) {
         WebElement contactUsButton = driver.findElement(By.xpath("//a[@title='Contact Us']"));
         contactUsButton.click();
 
@@ -49,7 +56,9 @@ public class AutomationPracticeTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h1[contains(text(), 'Contact us')]")));
         System.out.println("Nos encontramos en Contact Us.");
+    }
 
+    public static void selectSubjectOption(int optionNumber, WebDriver driver) {
         WebElement subjectButton = driver.findElement(By.xpath("//select[@id='id_contact']"));
         subjectButton.click();
 
@@ -59,7 +68,18 @@ public class AutomationPracticeTest {
                         "select[id='id_contact'] > option"));
         System.out.println("Hay " + subjectOptions.size() + " opciones.");
         subjectOptions.forEach(option -> System.out.println(option.getText()));
+        subjectOptions.get(optionNumber).click();
 
-        subjectOptions.get(1).click();
+        Assert.assertTrue(subjectOptions.get(optionNumber).isSelected());
+    }
+
+    @Test
+    public void sendContactMessage() {
+        WebDriver driver = Browser.getBrowserInstance("chrome");
+        driver.navigate().to(BASE_URL);
+
+        navigateToContactUs(driver);
+        selectSubjectOption(1, driver);
+
     }
 }
