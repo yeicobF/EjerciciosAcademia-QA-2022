@@ -16,7 +16,7 @@ public class AutomationPracticeTest extends AutomationPracticeBaseTest {
 
     Assert.assertTrue(home.isHomeLogoDisplayed());
     home.clickContactUs();
-    contactUs.waitUntilContactUsPageIsLoaded(wait);
+    contactUs.waitUntilPageIsLoaded(wait);
 
     Assert.assertTrue(contactUs.isContactUsLabelDisplayed());
     contactUs.selectSubjectOption(1);

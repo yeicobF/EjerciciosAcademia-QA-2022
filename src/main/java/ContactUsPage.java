@@ -4,56 +4,25 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 
 public class ContactUsPage extends BasePage {
-  private final By byContactUsLabel = By.xpath("//h1[contains(text(), 'Customer service - Contact us')]");
-  private final By byEmailField = By.xpath("//input[@type='text' and @id='email']");
-  private final By bySubjectDropdown = By.xpath("//select[@id='id_contact']");
-  private final By bySubjectDropdownOptions = By.cssSelector("select[id='id_contact'] > option");
-  private final String byOrderReference = "//input[@type='text' and @id='id_order']";
-  private final By bySubmitMessageButton = By.xpath("//button[@type='submit' and @id='submitMessage']");
-  private final By byMessageField = By.xpath("//textarea[@id='message']");
-  private final By byAlertMessageSuccess = By
+  private static final By byContactUsLabel = By.xpath("//h1[contains(text(), 'Customer service - Contact us')]");
+  private static final By byEmailField = By.xpath("//input[@type='text' and @id='email']");
+  private static final By bySubjectDropdown = By.xpath("//select[@id='id_contact']");
+  private static final By bySubjectDropdownOptions = By.cssSelector("select[id='id_contact'] > option");
+  private static final String byOrderReference = "//input[@type='text' and @id='id_order']";
+  private static final By bySubmitMessageButton = By.xpath("//button[@type='submit' and @id='submitMessage']");
+  private static final By byMessageField = By.xpath("//textarea[@id='message']");
+  private static final By byAlertMessageSuccess = By
       .xpath("//p[contains(text(), 'Your message has been successfully sent to our team.')]");
+  private static ExpectedCondition<WebElement> pageLoadedCondition = ExpectedConditions
+      .visibilityOfElementLocated(byContactUsLabel);
 
   public ContactUsPage(WebDriver driver) {
-    super(driver);
-  }
-
-  /**
-   * Vamos a la sección de Contact Us, utilizando un Fluent Wait para esperar
-   * a que el elemento esté disponible en cierto tiempo, revisando cada
-   * ciertos milisegundos si es que no lo ha encontrado. hasta llegar a un
-   * límite.
-   * 
-   * Esto nos evita problemas de no encontrar algún elemento porque no ha
-   * cargado la página.
-   * 
-   * @param driver
-   */
-  public void waitUntilContactUsPageIsLoaded(Wait<WebDriver> wait) {
-    // Wait<WebDriver> wait = getNewWait(10, 250, driver);
-
-    /*
-     * Esperar hasta que el elemento esperado sea visible. Si no lo es dentro
-     * del tiempo indicado en el wait, lanza una excepción, propia de la función
-     * until.
-     * 
-     * https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/support/
-     * ui/FluentWait.html
-     * 
-     * WebElement title = wait.until(new Function<WebDriver, WebElement>() {
-     * public WebElement apply(WebDriver driver) {
-     * return driver.findElement(By.xpath("//h1[contains(text(), 'Contact us')]"));
-     * }
-     * });
-     */
-    wait.until(
-        ExpectedConditions.visibilityOfElementLocated(byContactUsLabel));
-
-    System.out.println("Nos encontramos en Contact Us.");
+    super(driver, pageLoadedCondition);
   }
 
   public boolean isContactUsLabelDisplayed() {
