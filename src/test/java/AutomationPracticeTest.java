@@ -4,12 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AutomationPracticeTest extends AutomationPracticeBaseTest {
-  private String email;
-  private String title;
-  private String firstName;
-  private String lastName;
-  private String password;
-
   @Test
   public void sendContactMessage() {
     final HomePage homePage = new HomePage(driver);
@@ -43,11 +37,22 @@ public class AutomationPracticeTest extends AutomationPracticeBaseTest {
     final CreateAccountPage createAccountPage = new CreateAccountPage(driver);
 
     final Wait<WebDriver> wait = BasePage.getNewWait(10, 250, driver);
-    String email = "correo_prueba@gmail.com";
+    String email = "correo_prueba_nuevo@gmail.com";
     String title = "Mr.";
     String firstName = "Juan";
     String lastName = "Perez";
     String password = "123456789";
+    String company = "Sony";
+    String address = "Dirección prueba";
+    String secondAddress = "Segunda Dirección";
+    String city = "San Luis Potosí";
+    String state = "Colorado";
+    String zipCode = "12345";
+    String country = "United States";
+    String additionalInformation = "Información adicional";
+    String homePhone = "1104444444";
+    String mobilePhone = "4444444444";
+    String addressAlias = "Dirección de prueba";
     int day = 29;
     int month = 4;
     int year = 1990;
@@ -70,5 +75,19 @@ public class AutomationPracticeTest extends AutomationPracticeBaseTest {
     createAccountPage.fillFullBirthDate(day, month, year);
     createAccountPage.signUpForNewsletter();
     createAccountPage.receiveSpecialOffers();
+    createAccountPage.fillCompany(company);
+    createAccountPage.fillAddress(address);
+    createAccountPage.fillAddress2(secondAddress);
+    createAccountPage.fillCity(city);
+    createAccountPage.selectState(state);
+    createAccountPage.fillZipCode(zipCode);
+    createAccountPage.selectCountry(country);
+    createAccountPage.fillAdditionalInformation(additionalInformation);
+    createAccountPage.fillHomePhone(homePhone);
+    createAccountPage.fillMobilePhone(mobilePhone);
+    createAccountPage.fillAddressAlias(addressAlias);
+    createAccountPage.clickRegister();
+
+    Assert.assertTrue(createAccountPage.wasRegisterSuccessful());
   }
 }
