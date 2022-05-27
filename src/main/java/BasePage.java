@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 
 public class BasePage {
-  public WebDriver driver;
-  public ExpectedCondition<WebElement> pageLoadedCondition;
+  protected WebDriver driver;
+  private final ExpectedCondition<WebElement> pageLoadedCondition;
 
   public BasePage(WebDriver driver, ExpectedCondition<WebElement> pageLoadedCondition) {
     this.driver = driver;
