@@ -5,12 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 public class BasePage {
-  public WebDriver driver;
-  public ExpectedCondition<WebElement> pageLoadedCondition;
+  protected WebDriver driver;
+  private final ExpectedCondition<WebElement> pageLoadedCondition;
 
   public BasePage(WebDriver driver, ExpectedCondition<WebElement> pageLoadedCondition) {
     this.driver = driver;
@@ -60,6 +59,7 @@ public class BasePage {
      * });
      */
     wait.until(pageLoadedCondition);
-    System.out.println("La página ya cargó de acuerdo con 'pageLoadedCondition'.");
+    System.out
+        .println("La página " + this.getClass().getSimpleName() + " ya cargó de acuerdo con 'pageLoadedCondition'.");
   }
 }
